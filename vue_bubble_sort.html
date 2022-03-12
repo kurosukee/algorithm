@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <title>Bubble Sort</title>
+</head>
+
+<body>
+    <div id="app">
+        <h1>Bubble sort - バブルソート</h1>
+        <li v-for="value in values" v-text="value"></li>
+        <button @click="bubbleSort" :disabled="inProgress">sort</button>
+        <button @click="shuffle(values)" :disabled="inProgress">shuffle</button>
+        <hr />
+    </div>
+</body>
+<script>
+    new Vue({
+        el: "#app",
+        data: {
+            inProgress: false,
+            values: [9, 3, 6, 1, 4, 7, 2, 8, 5],
+        },
+        methods: {
+            async bubbleSort() {
+                this.inProgress = true
+                let counter = this.values.length - 1
+                for (counter; counter >= 0; counter--) {
+                    let counter2 = this.values.length - 1
+                    for (counter2; counter2 >= 0; counter2--) {
+                        const forth = this.values[counter2 - 1]
+                        const back = this.values[counter2]
+                        if (forth > back) {
+                            this.values.splice(counter2 - 1, 2, this.values[counter2], this.values[counter2 - 1]) // 要素を直前と入れ替える
+                        }
+                        await this.sleep(100)
+                    }
+                }
+                this.inProgress = false
+            },
+            sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            },
+            shuffle(array) {
+                array.sort(() => Math.random() - 0.5);
+            },
+        },
+        mounted() {
+
+        }
+    })
+</script>
+
+</html>

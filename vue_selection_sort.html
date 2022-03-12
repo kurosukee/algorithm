@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <title>Selection sort</title>
+</head>
+
+<body>
+    <div id="app">
+        <h1>Selection sort - 選択ソート</h1>
+        <li v-for="value in values" v-text="value"></li>
+        <button @click="selectionSort" :disabled="inProgress">sort</button>
+        <button @click="shuffle(values)" :disabled="inProgress">shuffle</button>
+        <hr />
+    </div>
+</body>
+<script>
+    new Vue({
+        el: "#app",
+        data: {
+            inProgress: false,
+            values: [3, 9, 6, 1, 4, 7, 2, 8, 5],
+        },
+        methods: {
+            async selectionSort() {
+                this.inProgress = true
+                let sorted = []
+                let counter = this.values.length - 1
+                let values = Array.prototype.concat(this.values)
+                for (let counter = 0; counter < this.values.length; counter++) {
+                    const minValue = values.reduce((prev, current) => Math.min(prev, current));
+                    const currentValue = this.values[counter]
+                    this.$set(this.values, this.values.indexOf(minValue), currentValue)
+                    this.$set(this.values, counter, minValue)
+                    const minIndex = values.indexOf(minValue);
+                    values.splice(minIndex, 1)
+                    await this.sleep(100)
+                }
+                this.inProgress = false
+            },
+            sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            },
+            shuffle(array) {
+                array.sort(() => Math.random() - 0.5);
+            },
+        },
+        mounted() {
+
+        }
+    })
+</script>
+
+</html>
